@@ -1,3 +1,6 @@
+export * from "./colors";
+export * from "./typography";
+export * from "./spacing";
 import { colors, getColors, ColorScheme } from './colors';
 import { typography } from './typography';
 import { spacing, borderRadius, shadows } from './spacing';

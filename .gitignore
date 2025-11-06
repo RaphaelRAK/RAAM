@@ -42,6 +42,7 @@ yarn-error.log
 **/fastlane/screenshots
 **/fastlane/test_output
 
+# Bundle artifacts
 # Bundle artifact
 *.jsbundle
 
@@ -64,5 +65,8 @@ web-build/
 
 # Misc
 *.log
+*.swp
+*.swo
+*~
 *.pem
 
