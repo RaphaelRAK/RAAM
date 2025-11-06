@@ -18,6 +18,22 @@ export const typography = {
     medium: "500" as const,
     semibold: "600" as const,
     bold: "700" as const,
+    regular: 'Inter',
+    ios: 'SF Pro Text',
+    android: 'Roboto',
+  },
+  fontSize: {
+    xs: 14,
+    sm: 16,
+    base: 18,
+    lg: 22,
+    xl: 28,
+  },
+  fontWeight: {
+    regular: '400' as const,
+    medium: '500' as const,
+    semibold: '600' as const,
+    bold: '700' as const,
   },
   lineHeight: {
     tight: 1.2,

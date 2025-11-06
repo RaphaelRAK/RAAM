@@ -43,6 +43,7 @@ yarn-error.log
 **/fastlane/test_output
 
 # Bundle artifacts
+# Bundle artifact
 *.jsbundle
 
 # CocoaPods
@@ -67,4 +68,5 @@ web-build/
 *.swp
 *.swo
 *~
+*.pem
 

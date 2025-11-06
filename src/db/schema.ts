@@ -2,6 +2,10 @@ import { SQLiteDatabase } from "expo-sqlite";
 
 export const createTables = async (db: SQLiteDatabase): Promise<void> => {
   // User Local
+import { SQLiteDatabase } from 'expo-sqlite';
+
+export const createTables = async (db: SQLiteDatabase): Promise<void> => {
+  // User local
   await db.execAsync(`
     CREATE TABLE IF NOT EXISTS user_local (
       id_device TEXT PRIMARY KEY,
@@ -11,16 +15,19 @@ export const createTables = async (db: SQLiteDatabase): Promise<void> => {
   `);
 
   // Vault
+  // Vaults
   await db.execAsync(`
     CREATE TABLE IF NOT EXISTS vault (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
       currency TEXT NOT NULL DEFAULT 'EUR',
+      currency TEXT NOT NULL,
       is_default INTEGER NOT NULL DEFAULT 0
     );
   `);
 
   // Category
+  // Categories
   await db.execAsync(`
     CREATE TABLE IF NOT EXISTS category (
       id TEXT PRIMARY KEY,
@@ -34,6 +41,15 @@ export const createTables = async (db: SQLiteDatabase): Promise<void> => {
   `);
 
   // Transaction
+      icon TEXT NOT NULL,
+      color TEXT NOT NULL,
+      parent_id TEXT,
+      FOREIGN KEY (vault_id) REFERENCES vault(id),
+      FOREIGN KEY (parent_id) REFERENCES category(id)
+    );
+  `);
+
+  // Transactions
   await db.execAsync(`
     CREATE TABLE IF NOT EXISTS transaction (
       id TEXT PRIMARY KEY,
@@ -41,6 +57,7 @@ export const createTables = async (db: SQLiteDatabase): Promise<void> => {
       type TEXT NOT NULL CHECK(type IN ('IN', 'OUT')),
       amount REAL NOT NULL,
       currency TEXT NOT NULL DEFAULT 'EUR',
+      currency TEXT NOT NULL,
       category_id TEXT,
       note TEXT,
       date INTEGER NOT NULL,
@@ -56,6 +73,12 @@ export const createTables = async (db: SQLiteDatabase): Promise<void> => {
   `);
 
   // Budget
+      FOREIGN KEY (vault_id) REFERENCES vault(id),
+      FOREIGN KEY (category_id) REFERENCES category(id)
+    );
+  `);
+
+  // Budgets
   await db.execAsync(`
     CREATE TABLE IF NOT EXISTS budget (
       id TEXT PRIMARY KEY,
@@ -71,6 +94,15 @@ export const createTables = async (db: SQLiteDatabase): Promise<void> => {
   `);
 
   // Reminder
+      period TEXT NOT NULL,
+      start_date INTEGER NOT NULL,
+      rollover INTEGER NOT NULL DEFAULT 0,
+      categories_json TEXT NOT NULL,
+      FOREIGN KEY (vault_id) REFERENCES vault(id)
+    );
+  `);
+
+  // Reminders
   await db.execAsync(`
     CREATE TABLE IF NOT EXISTS reminder (
       id TEXT PRIMARY KEY,
@@ -84,6 +116,13 @@ export const createTables = async (db: SQLiteDatabase): Promise<void> => {
   `);
 
   // Sync Outbox
+      payload_json TEXT NOT NULL,
+      type TEXT NOT NULL,
+      FOREIGN KEY (vault_id) REFERENCES vault(id)
+    );
+  `);
+
+  // Sync outbox
   await db.execAsync(`
     CREATE TABLE IF NOT EXISTS sync_outbox (
       id TEXT PRIMARY KEY,
@@ -102,6 +141,8 @@ export const createTables = async (db: SQLiteDatabase): Promise<void> => {
     CREATE INDEX IF NOT EXISTS idx_category_vault ON category(vault_id);
     CREATE INDEX IF NOT EXISTS idx_budget_vault ON budget(vault_id);
     CREATE INDEX IF NOT EXISTS idx_reminder_vault ON reminder(vault_id);
+    CREATE INDEX IF NOT EXISTS idx_budget_vault ON budget(vault_id);
+    CREATE INDEX IF NOT EXISTS idx_category_vault ON category(vault_id);
     CREATE INDEX IF NOT EXISTS idx_sync_outbox_ts ON sync_outbox(ts);
   `);
 };

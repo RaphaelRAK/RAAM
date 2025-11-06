@@ -1,6 +1,9 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet, View, ViewStyle } from "react-native";
 import { colors, spacing, borderRadius, typography } from "@/theme";
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { colors, spacing, typography, borderRadius } from '@/theme';
 
 interface CategoryChipProps {
   id: string;
@@ -10,6 +13,10 @@ interface CategoryChipProps {
   selected?: boolean;
   onPress?: () => void;
   style?: ViewStyle;
+  color: string;
+  icon?: string;
+  selected?: boolean;
+  onPress?: () => void;
 }
 
 export const CategoryChip: React.FC<CategoryChipProps> = ({
@@ -19,6 +26,10 @@ export const CategoryChip: React.FC<CategoryChipProps> = ({
   selected = false,
   onPress,
   style,
+  color,
+  icon,
+  selected = false,
+  onPress,
 }) => {
   return (
     <TouchableOpacity
@@ -28,6 +39,8 @@ export const CategoryChip: React.FC<CategoryChipProps> = ({
         { borderColor: color },
         selected && { backgroundColor: `${color}20` },
         style,
+        { backgroundColor: selected ? color : colors.gray[400] },
+        selected && styles.selected,
       ]}
       onPress={onPress}
       activeOpacity={0.7}
@@ -37,6 +50,7 @@ export const CategoryChip: React.FC<CategoryChipProps> = ({
         style={[
           styles.label,
           selected && { color },
+          { color: selected ? colors.background.light : colors.text.primary.light },
         ]}
       >
         {label}
@@ -62,6 +76,22 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: typography.fontSize.base,
     marginRight: spacing[1],
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.full,
+    marginRight: spacing.sm,
+    marginBottom: spacing.sm,
+    minHeight: 44,
+  },
+  selected: {
+    borderWidth: 2,
+    borderColor: colors.primary,
+  },
+  icon: {
+    fontSize: typography.fontSize.base,
+    marginRight: spacing.xs,
   },
   label: {
     fontSize: typography.fontSize.sm,
