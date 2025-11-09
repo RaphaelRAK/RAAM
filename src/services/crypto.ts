@@ -20,7 +20,8 @@ export const getMasterKey = async (): Promise<Uint8Array | null> => {
     if (!keyBase64) {
       return null;
     }
-    return Uint8Array.from(Buffer.from(keyBase64, "base64"));
+    // Convertir depuis base64 en utilisant atob (compatible React Native)
+    return Uint8Array.from(atob(keyBase64), (c) => c.charCodeAt(0));
   } catch (error) {
     console.error("Erreur lors de la récupération de la clé maître:", error);
     return null;
@@ -32,7 +33,8 @@ export const getMasterKey = async (): Promise<Uint8Array | null> => {
  */
 export const setMasterKey = async (key: Uint8Array): Promise<boolean> => {
   try {
-    const keyBase64 = Buffer.from(key).toString("base64");
+    // Convertir en base64 en utilisant btoa (compatible React Native)
+    const keyBase64 = btoa(String.fromCharCode(...key));
     await SecureStore.setItemAsync(MASTER_KEY_STORAGE_KEY, keyBase64);
     return true;
   } catch (error) {
@@ -54,7 +56,8 @@ export const encrypt = (plaintext: string, key: Uint8Array): string => {
   combined.set(nonce);
   combined.set(ciphertext, nonce.length);
 
-  return Buffer.from(combined).toString("base64");
+  // Convertir en base64 en utilisant btoa (compatible React Native)
+  return btoa(String.fromCharCode(...combined));
 };
 
 /**
@@ -62,7 +65,8 @@ export const encrypt = (plaintext: string, key: Uint8Array): string => {
  */
 export const decrypt = (encrypted: string, key: Uint8Array): string | null => {
   try {
-    const combined = Uint8Array.from(Buffer.from(encrypted, "base64"));
+    // Convertir depuis base64 en utilisant atob (compatible React Native)
+    const combined = Uint8Array.from(atob(encrypted), (c) => c.charCodeAt(0));
     const nonce = combined.slice(0, nacl.secretbox.nonceLength);
     const ciphertext = combined.slice(nacl.secretbox.nonceLength);
 
