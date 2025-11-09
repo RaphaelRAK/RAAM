@@ -6,20 +6,16 @@ import { colors } from '@/theme';
 
 export default function Index() {
   const router = useRouter();
-  const { isInitialized, isOnboarded } = useAuthStore();
+  const { isInitialized } = useAuthStore();
 
   useEffect(() => {
-    console.log('Index: isInitialized =', isInitialized, 'isOnboarded =', isOnboarded);
+    console.log('Index: isInitialized =', isInitialized);
     if (isInitialized) {
-      if (isOnboarded) {
-        console.log('Index: Redirection vers dashboard');
-        router.replace('/(tabs)/dashboard');
-      } else {
-        console.log('Index: Redirection vers onboarding');
-        router.replace('/onboarding');
-      }
+      // Redirection directe vers le dashboard, même sans onboarding
+      console.log('Index: Redirection vers dashboard');
+      router.replace('/(tabs)/dashboard');
     }
-  }, [isInitialized, isOnboarded, router]);
+  }, [isInitialized, router]);
 
   return (
     <View style={styles.container}>
