@@ -1,5 +1,5 @@
 // Liste de 2048 mots BIP39 (version simplifiée pour MVP)
-const BIP39_WORDS = [
+export const BIP39_WORDS = [
   'abandon', 'ability', 'able', 'about', 'above', 'absent', 'absorb', 'abstract', 'absurd', 'abuse',
   'access', 'accident', 'account', 'accuse', 'achieve', 'acid', 'acoustic', 'acquire', 'across', 'act',
   'action', 'actor', 'actual', 'adapt', 'add', 'addict', 'address', 'adjust', 'admit', 'adult',
