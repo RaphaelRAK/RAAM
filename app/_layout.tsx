@@ -42,17 +42,17 @@ export default function RootLayout() {
     <GestureHandlerRootView style={styles.container}>
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
-          <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+          <StatusBar style="light" />
           <Stack
             screenOptions={{
               headerShown: false,
               headerStyle: {
-                backgroundColor: colorScheme === 'dark' ? colors.background.dark : colors.background.light,
+                backgroundColor: colors.background.light,
               },
-              headerTintColor: colorScheme === 'dark' ? colors.text.primary.dark : colors.text.primary.light,
+              headerTintColor: colors.text.primary.light,
               headerShadowVisible: false,
               contentStyle: { 
-                backgroundColor: colorScheme === 'dark' ? colors.background.dark : colors.background.light 
+                backgroundColor: colors.background.light 
               },
             }}
           >

@@ -22,9 +22,9 @@ const DEFAULT_COLORS = [
   colors.accent,
   colors.info,
   colors.warning,
-  colors.error,
-  '#8B5CF6',
-  '#EC4899',
+  '#AF52DE',
+  '#FF2D55',
+  '#FF9500',
 ];
 
 export const CategoryPieChart: React.FC<CategoryPieChartProps> = ({

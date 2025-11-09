@@ -30,17 +30,17 @@ export const ExpenseLineChart: React.FC<ExpenseLineChartProps> = ({
         >
           <VictoryAxis
             style={{
-              axis: { stroke: colors.gray[400] },
-              tickLabels: { fill: colors.text.secondary.light, fontSize: 10 },
-              grid: { stroke: colors.gray[400], strokeDasharray: '4,4' },
+              axis: { stroke: colors.gray[600] },
+              tickLabels: { fill: colors.text.secondary.light, fontSize: 10, fontFamily: 'System' },
+              grid: { stroke: colors.gray[700], strokeDasharray: '4,4', strokeOpacity: 0.3 },
             }}
           />
           <VictoryAxis
             dependentAxis
             style={{
-              axis: { stroke: colors.gray[400] },
-              tickLabels: { fill: colors.text.secondary.light, fontSize: 10 },
-              grid: { stroke: colors.gray[400], strokeDasharray: '4,4' },
+              axis: { stroke: colors.gray[600] },
+              tickLabels: { fill: colors.text.secondary.light, fontSize: 10, fontFamily: 'System' },
+              grid: { stroke: colors.gray[700], strokeDasharray: '4,4', strokeOpacity: 0.3 },
             }}
             tickFormat={(t) => `${(t / 1000).toFixed(0)}k`}
           />
@@ -48,10 +48,9 @@ export const ExpenseLineChart: React.FC<ExpenseLineChartProps> = ({
             data={data}
             style={{
               data: {
-                fill: colors.primary,
-                fillOpacity: 0.2,
-                stroke: colors.primary,
-                strokeWidth: 2,
+                fill: colors.accent.expense,
+                fillOpacity: 0.15,
+                stroke: 'transparent',
               },
             }}
           />
@@ -59,10 +58,12 @@ export const ExpenseLineChart: React.FC<ExpenseLineChartProps> = ({
             data={data}
             style={{
               data: {
-                stroke: colors.primary,
-                strokeWidth: 2,
+                stroke: colors.accent.expense,
+                strokeWidth: 3,
+                strokeLinecap: 'round',
               },
             }}
+            interpolation="monotoneX"
           />
         </VictoryChart>
       </View>
