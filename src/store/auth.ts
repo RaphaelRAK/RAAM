@@ -3,7 +3,7 @@ import * as SecureStore from "expo-secure-store";
 import { generateMasterKey, setMasterKey, getMasterKey } from "@/services/crypto";
 import { generateRecoveryKey } from "@/services/recovery";
 import { generateId } from "@/utils/id";
-import { getDatabase } from "@/db";
+import { getDatabase, getFirstAsync, runAsync } from "@/db";
 import { UserLocal } from "@/types";
 
 interface AuthState {
@@ -26,24 +26,36 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   masterKey: null,
 
   initialize: async () => {
-    const db = await getDatabase();
-    const result = await db.getFirstAsync<{ id_device: string; created_at: number; recovery_hint?: string }>(
-      "SELECT * FROM user_local LIMIT 1"
-    );
+    try {
+      console.log('AuthStore: Début de l\'initialisation...');
+      const db = await getDatabase();
+      console.log('AuthStore: Base de données ouverte');
+      const result = await getFirstAsync<{ id_device: string; created_at: number; recovery_hint?: string }>(
+        db,
+        "SELECT * FROM user_local LIMIT 1"
+      );
+      console.log('AuthStore: Résultat de la requête:', result ? 'utilisateur trouvé' : 'aucun utilisateur');
 
-    if (result) {
-      const masterKey = await getMasterKey();
-      set({
-        isInitialized: true,
-        isOnboarded: true,
-        userLocal: {
-          id_device: result.id_device,
-          created_at: result.created_at,
-          recovery_hint: result.recovery_hint,
-        },
-        masterKey,
-      });
-    } else {
+      if (result) {
+        const masterKey = await getMasterKey();
+        console.log('AuthStore: Utilisateur existant, clé maître récupérée');
+        set({
+          isInitialized: true,
+          isOnboarded: true,
+          userLocal: {
+            id_device: result.id_device,
+            created_at: result.created_at,
+            recovery_hint: result.recovery_hint,
+          },
+          masterKey,
+        });
+      } else {
+        console.log('AuthStore: Nouvel utilisateur, redirection vers onboarding');
+        set({ isInitialized: true, isOnboarded: false });
+      }
+    } catch (error) {
+      console.error("AuthStore: Erreur lors de l'initialisation:", error);
+      // On initialise quand même pour ne pas bloquer l'app
       set({ isInitialized: true, isOnboarded: false });
     }
   },
@@ -56,10 +68,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const recoveryKey = generateRecoveryKey();
 
     await setMasterKey(masterKey);
-    await db.runAsync(
+    await runAsync(
+      db,
       "INSERT INTO user_local (id_device, created_at) VALUES (?, ?)",
-      deviceId,
-      createdAt
+      [deviceId, createdAt]
     );
 
     set({
@@ -81,7 +93,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   loadUser: async () => {
     const db = await getDatabase();
-    const result = await db.getFirstAsync<{ id_device: string; created_at: number; recovery_hint?: string }>(
+    const result = await getFirstAsync<{ id_device: string; created_at: number; recovery_hint?: string }>(
+      db,
       "SELECT * FROM user_local LIMIT 1"
     );
 

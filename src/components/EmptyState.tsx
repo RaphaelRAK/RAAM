@@ -1,17 +1,13 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { colors, spacing, typography } from "@/theme";
-import { Button } from "./Button";
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { colors, spacing, typography, borderRadius } from '@/theme';
+import { View, Text, StyleSheet } from 'react-native';
+import { colors, spacing, typography } from '@/theme';
+import { Button } from './Button';
 
 interface EmptyStateProps {
   title: string;
   message: string;
   ctaLabel?: string;
   onCtaPress?: () => void;
-  onPress?: () => void;
   icon?: string;
 }
 
@@ -20,7 +16,6 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   message,
   ctaLabel,
   onCtaPress,
-  onPress,
   icon,
 }) => {
   return (
@@ -35,10 +30,6 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
           variant="primary"
           style={styles.button}
         />
-      {ctaLabel && onPress && (
-        <TouchableOpacity style={styles.button} onPress={onPress}>
-          <Text style={styles.buttonText}>{ctaLabel}</Text>
-        </TouchableOpacity>
       )}
     </View>
   );
@@ -47,22 +38,8 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: spacing[8],
-  },
-  icon: {
-    fontSize: 64,
-    marginBottom: spacing[4],
-  },
-  title: {
-    fontSize: typography.fontSize.xl,
-    fontWeight: typography.fontWeight.bold,
-    color: colors.text.primary.light,
-    marginBottom: spacing[2],
-    textAlign: "center",
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
     padding: spacing.xl,
   },
   icon: {
@@ -70,7 +47,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   title: {
-    fontSize: typography.fontSize.lg,
+    fontSize: typography.fontSize.xl,
     fontWeight: typography.fontWeight.bold,
     color: colors.text.primary.light,
     marginBottom: spacing.sm,
@@ -79,28 +56,11 @@ const styles = StyleSheet.create({
   message: {
     fontSize: typography.fontSize.base,
     color: colors.text.secondary.light,
-    textAlign: "center",
-    marginBottom: spacing[6],
+    textAlign: 'center',
+    marginBottom: spacing.lg,
     lineHeight: typography.lineHeight.relaxed * typography.fontSize.base,
   },
   button: {
-    marginTop: spacing[4],
-    textAlign: 'center',
-    marginBottom: spacing.lg,
-  },
-  button: {
-    backgroundColor: colors.primary,
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
-    borderRadius: borderRadius.md,
-    minHeight: 44,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    fontSize: typography.fontSize.base,
-    fontWeight: typography.fontWeight.semibold,
-    color: colors.background.light,
+    marginTop: spacing.md,
   },
 });
-
